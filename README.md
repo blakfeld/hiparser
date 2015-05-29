@@ -15,6 +15,59 @@ that would be a fun experiment.
 Either way, regexes in Python are pretty fast, and now I have three kind of
 expensive regexes, as opposed to n pretty fast regexes.
 
+This script looks out for three things:
+
+* @mentions
+* (emoticons)
+* http://urls.com
+
+and then parses them out to JSON like so:
+
+```
+Input:
+    "@bob (sadface) did you see this! http://sadnewssite.com
+
+Output:
+    {
+        "mentions": [
+            "bob"
+        ],
+        "emoticons": [
+            "success"
+        ],
+        "links": [
+            {
+                "url": "http://sadnewssite.com",
+                "title": "Super sad news today!".
+            }
+        ]
+    }
+```
+
+It does this by taking in the string, and then running the following
+regexes on them:
+
+```
+mention_re = re.compile(r'(\s@[a-zA-Z]+|^@[a-zA-Z]+)')
+emoticon_re = re.compile(r'\([a-zA-Z\d]{1,15}\)')
+url_re = re.compile(r'(https?:\/\/\S+)')
+```
+
+For mentions and emoticons theres a little post processing for the sake
+of formatting, but urls have quite a bit, since URL regexes are actually like
+a million lines long. For URLs I parse out what looks like it might be a URL,
+then use urlparse as a first pass at validating it, then I attempt to actually
+query the URL (to get the title). If it fails because I have a bad connection,
+the title gets set to blank and we move on. If it fails because it doesn't
+resolve, then I assume its an invalid link and reject it. This is far from
+perfect, but its a good start.
+
+It's also worth noting that if a link ends in punctuation, I strip it. I can't
+think of a valid URL where that would hose me (in the event of query strings
+or hashbangs I would expect either a character to come after them, or for
+them to be inconsequential for resolving the page), but it's an edge case to
+be aware of.
+
 
 ## Installation
 
