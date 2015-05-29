@@ -3,13 +3,17 @@
 A fun script to emulate parsing out commands from a chat client.
 
 I went through a few variations on how I wanted to handle the parsing. Namly
-if I wanted to do a `split()` on my input, and parse in one block at a time,
-but I ended up settling on regular expressions. They're slower, for sure, but
-none of these actions are really all that speed dependent, and every
-IRC bot/hipchat bot I've ever interacted with uses regular expressions,
-so I figure if it's good enough for them, it's good enough for me. It's
-probably fine unless someone decides to troll everyone and dump in the entire
-text of 'The Odyessy' or some such. Although that would be a fun experiment.
+if I wanted to do a `split()` on my input, and parse in one block at a time
+or, if I wanted to just use some regexes. In the end I ended setted on regular
+expressions. They're slower, for sure, but none of these actions are really
+all that speed dependent, and every IRC bot/hipchat bot I've ever interacted
+with uses regular expressions, so I figure if it's good enough for them,
+it's good enough for me. It's probably fine unless someone decides to troll
+everyone and dump in the entire text of 'The Odyessy' or some such. Although
+that would be a fun experiment.
+
+Either way, regexes in Python are pretty fast, and now I have three kind of
+expensive regexes, as opposed to n pretty fast regexes.
 
 
 ## Installation
